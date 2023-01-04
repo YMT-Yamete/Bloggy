@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->integer('category_id');
             $table->text('content');
+            $table->text('img_path');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

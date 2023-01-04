@@ -2,9 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class AuthMiddleware
 {
@@ -20,7 +21,9 @@ class AuthMiddleware
         if(!Auth::check()) {
             return redirect('/login');
         }
-
+        if(User::find(Auth::id())->role == "User") {
+            return redirect('/');
+        }
         return $next($request);
     }
 }

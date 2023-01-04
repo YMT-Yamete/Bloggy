@@ -11,8 +11,11 @@
                     <div class="card-header">
                         # {{ $post->category->name }}
                     </div>
+                    <div class="text-center">
+                        <img src="{{ route('displayBlogImage', $post->img_path) }}" class="card-img-top cardImg" />
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{ $post->title }}</h5>
+                        <h5 class="card-title text-center">{{ $post->title }} <span class="authorName">By {{ $post->user->name }}</span> </h5>
                         <p class="card-text"><span>{{ $post->content }}</span></p>
                     </div>
                 </div>

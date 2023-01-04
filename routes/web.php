@@ -6,6 +6,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StorageFileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,6 +32,9 @@ Route::get('/posts/{id}/show', [PostController::class, 'showDetails']);
 #add comment
 Route::post('/posts/{id}/comments/', [CommentController::class, 'store']);
 
+#img route
+Route::get('image/{filename}', [StorageFileController::class, 'getBlogImgs'])->name('displayBlogImage');
+
 Route::middleware(['authMiddleware'])->group(function () {
 
     #posts
@@ -50,4 +54,6 @@ Route::middleware(['authMiddleware'])->group(function () {
 #auth
 Route::get('/login', [AuthController::class, 'loginForm']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'registerForm']);
+Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout']);

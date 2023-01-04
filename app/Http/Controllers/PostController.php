@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::paginate(5);
+        // $posts = Post::select('posts.id', 'posts.title', 'posts.category_id', 'posts->content')
+        //         ->join('users', 'users.')
+        //         ->where()
+        //         ->paginate(5);
+        $posts = Post::where('user_id', Auth::id())->paginate(5);
         return view('post.index', compact('posts'));
     }
 
@@ -25,15 +30,27 @@ class PostController extends Controller
         $request->validate([
             'title' => 'required',
             'category_id' => 'required',
-            'content' => 'required'
+            'content' => 'required',
+            'img' => 'required',
         ]);
 
-        Post::create([
-            'title' => $request->title,
-            'category_id' => $request->category_id,
-            'content' => $request->content
-        ]);
-        return redirect('/posts')->with('msg', 'A post has been created successfully');
+        if ($request->hasFile('img')) {
+            $this->validate($request, [
+                'img' => ['image', 'mimes:jpeg,png,jpg,gif,svg'],
+            ]);
+
+            // Save the file locally in the storage/app/public/ folder under a new folder named /blog
+            $request->img->store('blog', 'public');
+
+            Post::create([
+                'title' => $request->title,
+                'category_id' => $request->category_id,
+                'content' => $request->content,
+                'img_path' => $request->img->hashName(),
+                'user_id' => Auth()->user()->id,
+            ]);
+            return redirect('/posts')->with('msg', 'A post has been created successfully');
+        }
     }
 
     public function edit($id)
@@ -72,7 +89,7 @@ class PostController extends Controller
         return view('index', compact('posts'));
     }
 
-    
+
     public function showDetails($id)
     {
         $post = Post::find($id);

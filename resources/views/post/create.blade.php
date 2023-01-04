@@ -7,7 +7,7 @@
             <a href="{{ url('/posts') }}" class="btn btn-secondary">Back</a>
         </div>
         <hr>
-        <form action="{{ url('/posts') }}" method="POST">
+        <form action="{{ url('/posts') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="title">Title</label>
@@ -32,8 +32,16 @@
             </div>
             <div class="mb-3">
                 <label for="content">Content</label>
-                <textarea rows="4" class="form-control @error('title') is-invalid @enderror" name="content">{{ old('content') }}</textarea>
+                <textarea rows="4" class="form-control @error('content') is-invalid @enderror" name="content">{{ old('content') }}</textarea>
                 @error('content')
+                    <span class="text-danger"> {{ $message }} </span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label for="img">Image</label>
+                <input type="file" value="{{ old('img') }}" class="form-control @error('img') is-invalid @enderror"
+                    name="img">
+                @error('img')
                     <span class="text-danger"> {{ $message }} </span>
                 @enderror
             </div>
