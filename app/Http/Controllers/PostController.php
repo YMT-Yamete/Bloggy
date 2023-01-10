@@ -8,7 +8,6 @@ use App\Models\Comment;
 use App\Models\React;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Paginate;
 
 class PostController extends Controller
 {
@@ -108,7 +107,9 @@ class PostController extends Controller
         $comments = Comment::where('post_id', '=', $id)->where('status', '=', 'Approved')->get();
         $likes = React::where('react', '=', 'Like')->get();
         $dislikes = React::where('react', '=', 'Dislike')->get();
-        $reacted = React::where('user_id', '=', Auth()->user()->id)->first();
+        if (Auth::check()) {
+            $reacted = React::where('user_id', '=', Auth()->user()->id)->first();
+        }
         if (isset($reacted)) {
             $reactedReaction = $reacted->react;
         } else {

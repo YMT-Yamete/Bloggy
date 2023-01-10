@@ -34,6 +34,10 @@ Route::get('/posts/{id}/show', [PostController::class, 'showDetails']);
 #add comment
 Route::post('/posts/{id}/comments/', [CommentController::class, 'store']);
 
+#post-react
+Route::post('/posts/{id}/like', [ReactController::class, 'like']);
+Route::post('/posts/{id}/dislike', [ReactController::class, 'dislike']);
+
 #img route
 Route::get('image/{filename}', [StorageFileController::class, 'getBlogImgs'])->name('displayBlogImage');
 
@@ -51,10 +55,6 @@ Route::middleware(['authMiddleware'])->group(function () {
     #post-comment
     Route::get('/posts/{id}/comments', [CommentController::class, 'index']);
     Route::put('/posts/{post_id}/comments/{comment_id}', [CommentController::class, 'changeCommentStatus']);
-
-    #post-react
-    Route::post('/posts/{id}/like', [ReactController::class, 'like']);
-    Route::post('/posts/{id}/dislike', [ReactController::class, 'dislike']);
 });
 
 #auth
