@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Bloggy (Author)</title>
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -18,7 +18,7 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-dark">
         <div class="container">
-            <a class="navbar-brand text-light" href=""><b>Bloggy</b></a>
+            <a class="navbar-brand text-light" href=""><b>Bloggy (Author Dashboard)</b></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll"
                 aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,21 +26,31 @@
             <div class="collapse navbar-collapse" id="navbarScroll">
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                     <li class="nav-item">
-                        <a class="nav-link text-light {{ Route::current()->uri == 'users' ? 'bg-success rounded' : '' }}"
+                        <a class="nav-link text-light text-center {{ Route::current()->uri == 'users' ? 'bg-success rounded' : '' }}"
                             href="{{ url('/users/') }}">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light {{ Route::current()->uri == 'categories' ? 'bg-success rounded' : '' }}"
+                        <a class="nav-link text-light text-center {{ Route::current()->uri == 'categories' ? 'bg-success rounded' : '' }}"
                             href="{{ url('/categories/') }}">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light {{ Route::current()->uri == 'posts' ? 'bg-success rounded' : '' }}"
+                        <a class="nav-link text-light text-center {{ Route::current()->uri == 'posts' ? 'bg-success rounded' : '' }}"
                             href="{{ url('/posts/') }}">Posts</a>
                     </li>
                 </ul>
                 <form class="d-flex" method="POST" action="{{ url('/logout') }}">
                     @csrf
-                    <button class="btn btn-outline-danger" type="submit">Logout</button>
+                    <table class="tableCenter">
+                        <tr>
+                            <td>
+                                <p style="color: white" class="mt-3 px-5">Welcome {{Auth()->User()->name}}</p>
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" href="{{ url('/') }}">View as normal user</a>
+                                <button class="btn btn-danger">Logout</button>
+                            </td>
+                        </tr>
+                    </table>
                 </form>
             </div>
         </div>

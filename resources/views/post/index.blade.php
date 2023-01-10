@@ -3,8 +3,21 @@
 @section('content')
     <div class="container p-5">
         <div class="d-flex justify-content-between">
-            <h3>Posts List</h3>
-            <a href="{{ url('/posts/create/') }}" class="btn btn-primary">Add new post</a>
+            <div class="d-flex">
+                <h3>Posts List</h3>
+                <form class="mx-3" method="GET" action="{{ url('/posts') }}">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Enter keyword" name="q">
+                        <div class="input-group-append">
+                            <button class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <a href="{{ url('/posts/create/') }}" class="btn btn-primary">Add new post</a>
+            </div>
         </div>
         <hr>
         <div>

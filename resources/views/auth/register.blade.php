@@ -1,5 +1,9 @@
 @extends('layout.layout')
 
+@section('backgroundCss')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/background.css') }}">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">

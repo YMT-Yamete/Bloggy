@@ -4,18 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Comment;
+use App\Models\React;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Paginate;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // $posts = Post::select('posts.id', 'posts.title', 'posts.category_id', 'posts->content')
-        //         ->join('users', 'users.')
-        //         ->where()
-        //         ->paginate(5);
-        $posts = Post::where('user_id', Auth::id())->paginate(5);
+        if (isset($request->q)) {
+            $posts = Post::query()
+                ->where('title', 'LIKE', "%{$request->q}%")
+                ->where('user_id', Auth::id())
+                ->paginate(5);
+        } else {
+            $posts = Post::where('user_id', Auth::id())->paginate(5);
+        }
         return view('post.index', compact('posts'));
     }
 
@@ -83,16 +89,31 @@ class PostController extends Controller
         return back()->with('msg', 'A post has been deleted successfully');
     }
 
-    public function showList()
+    public function showList(Request $request)
     {
-        $posts = Post::paginate(5);
-        return view('index', compact('posts'));
+        if (isset($request->category_ids)) {
+            $posts = Post::whereIn('category_id', $request->category_ids)->paginate(5);
+            $categories = Category::all();
+        } else {
+            $posts = Post::paginate(5);
+            $categories = Category::all();
+        }
+        return view('index', compact('posts', 'categories'));
     }
 
 
     public function showDetails($id)
     {
         $post = Post::find($id);
-        return view('post.show', compact('post'));
+        $comments = Comment::where('post_id', '=', $id)->where('status', '=', 'Approved')->get();
+        $likes = React::where('react', '=', 'Like')->get();
+        $dislikes = React::where('react', '=', 'Dislike')->get();
+        $reacted = React::where('user_id', '=', Auth()->user()->id)->first();
+        if (isset($reacted)) {
+            $reactedReaction = $reacted->react;
+        } else {
+            $reactedReaction = null;
+        }
+        return view('post.show', compact('post', 'comments', 'likes', 'dislikes', 'reactedReaction'));
     }
 }

@@ -34,7 +34,11 @@
                                 <form action="{{ url('/posts/'. $post->id .'/comments/' . $comment->id) }}" method="POST">
                                     @csrf
                                     @method("PUT")
-                                    <button class="btn btn-danger m-1">Deny</button>
+                                    @if($comment->status == "Approved")
+                                        <button class="btn btn-danger m-1">Deny</button>
+                                    @else
+                                        <button class="btn btn-success m-1">Approve</button>
+                                    @endif
                                 </form>
                             </td>
                         </tr>

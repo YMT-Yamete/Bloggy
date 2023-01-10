@@ -99,8 +99,12 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::find($id)->delete();
-        Post::where('category_id', '=', $id)->delete();
-        return redirect('/categories')->with('msg', 'A category has been deleted successfully');
+        if (count(Category::find($id)->posts) > 0) {
+            return redirect('/categories')->with('msg', 'A category cant be deleted because there are posts related to it.');
+        } else {
+            Category::find($id)->delete();
+            Post::where('category_id', '=', $id)->delete();
+            return redirect('/categories')->with('msg', 'A category has been deleted successfully');
+        }
     }
 }

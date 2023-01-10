@@ -101,11 +101,17 @@ class CommentController extends Controller
     {
     }
 
-    public function denyComment(Request $request, $post_id, $comment_id)
+    public function changeCommentStatus(Request $request, $post_id, $comment_id)
     {
         $comment = Comment::find($comment_id);
+        if($comment->status == "Approved") {
+            $changingValue = "Denied";
+        }
+        else {
+            $changingValue = "Approved";
+        }
         $comment->update([
-            'status' => "Denied",
+            'status' => $changingValue,
         ]);
         return redirect('/posts/' . $post_id . '/comments')->with('msg', 'A comment has been denied');
     }

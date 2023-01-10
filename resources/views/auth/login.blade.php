@@ -1,14 +1,18 @@
 @extends('layout.layout')
 
+@section('backgroundCss')
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/background.css') }}">
+@endsection
+
 @section('content')
     <div class="container">
         <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
             <form action="{{ url('/login') }}" method="POST">
                 @csrf
-                @if(session()->has('msg'))
-                <div class="alert alert-danger" role="alert">
-                    {{session()->get('msg')}}
-                </div>
+                @if (session()->has('msg'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session()->get('msg') }}
+                    </div>
                 @endif
                 <div class="card shadow" style="width: 30rem;">
                     <div class="card-body">
