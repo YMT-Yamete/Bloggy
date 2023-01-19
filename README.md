@@ -1,1 +1,1 @@
-# Simple blogging system developed using laravel.
+Simple blogging system developed using laravel.
